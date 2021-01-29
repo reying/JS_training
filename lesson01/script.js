@@ -1,7 +1,7 @@
 let money;
 let income;
 let addExpenses;
-const deposit;
+let deposit;
 let mission;
 let period;
 
