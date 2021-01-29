@@ -1,10 +1,9 @@
 let money;
 let income;
-
-function addExpenses() {};
+let addExpenses;
 let deposit;
-const mission = 1;
-const period = 5;
+let mission;
+let period;
 
 alert('Жмякни чтобы продолжить --->');
 
