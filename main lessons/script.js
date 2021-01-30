@@ -1,3 +1,4 @@
+// Присвоение значений переменным:
 let money = 50000;
 let income = 'фриланс';
 let addExpenses = 'Комуналка, связь, топливо, продукты';
@@ -5,6 +6,7 @@ let deposit = true;
 let mission = 300000;
 let period = 6;
 
+// Применение методов и свойств:
 console.log('money - тип', typeof(money));
 console.log('income - тип', typeof(income));
 console.log('deposit - тип', typeof(deposit));
