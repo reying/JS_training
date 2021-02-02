@@ -1,16 +1,17 @@
 // Присвоение значений переменным:
-let money = 50000;
+let money = prompt('Ваш месячный доход?');
 let income = 'фриланс';
-let addExpenses = 'Комуналка, связь, топливо, продукты';
-let deposit = true;
+let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+let deposit = confirm('Есть ли у вас депозит в банке?');
 let mission = 300000;
-let period = 6;
-let budgetDay = money / 30;
+let period;
+let budgetDay;
 let budgetMonth;
-let expenses1;
-let expenses2;
-let amount1;
-let amount2;
+let expenses1 = prompt('Введите обязательную статью расходов?');
+let amount1 = prompt('Во сколько это обойдется?');
+let expenses2 = prompt('Введите обязательную статью расходов?');
+let amount2 = prompt('Во сколько это обойдется?');
+let incomeLvl;
 
 
 // Применение методов и свойств:
@@ -30,34 +31,25 @@ let amount2;
 
 // console.log(budgetDay);
 
-// Запрос данных от пользователя
-money = prompt('Ваш месячный доход?');
-addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
-deposit = confirm('Есть ли у вас депозит в банке?');
-expenses1 = prompt('Введите обязательную статью расходов?');
-amount1 = prompt('Во сколько это обойдется?');
-expenses2 = prompt('Введите обязательную статью расходов?');
-amount2 = prompt('Во сколько это обойдется?');
 
-// Вычисление месячного бюджета
-budgetMonth = money - amount1 - amount2;
-console.log('Бюджет на месяц, с учетом расходов:', budgetMonth);
-
-// Вычисление периода достижения цели
-period = Math.ceil(mission / budgetMonth);
-console.log('Период достижения цели:', period);
-
-// Вычисление дневного бюджета
-budgetDay = Math.floor(budgetMonth / 30);
-console.log('Бюджет на день:', budgetDay);
-
+// Вычисления
+budgetMonth = money - amount1 - amount2; // Определение месячного буджета
+budgetDay = Math.floor(budgetMonth / 30); // Определение дневного бюджета
+period = Math.ceil(mission / budgetMonth); // Определение периода достижение цели
 // Определение уровня дохода
 if (budgetDay >= 1200) {
-    console.log('У вас высокий уровень дохода');
+    incomeLvl = 'У вас высокий уровень дохода';
 } else if (budgetDay < 1200 & budgetDay >= 600) {
-    console.log('У вас средний уровень дохода');
+    incomeLvl = 'У вас средний уровень дохода';
 } else if (budgetDay < 600 & budgetDay >= 0) {
-    console.log('К сожалению у вас уровень дохода ниже среднего');
+    incomeLvl = 'К сожалению у вас уровень дохода ниже среднего';
 } else {
-    console.log('Что то пошло не так');
+    incomeLvl = 'Что то пошло не так';
 }
+
+
+// Вывод в консоль
+console.log('Бюджет на месяц, с учетом расходов:', budgetMonth, 'руб.');
+console.log('Бюджет на день:', budgetDay, 'руб.');
+console.log('Период достижения цели:', period, 'мес.');
+console.log(incomeLvl);
