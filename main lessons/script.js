@@ -2,12 +2,10 @@
 
 /* Присвоение значений переменным: */
 const income = 'фриланс',
-    deposit = confirm('Есть ли у вас депозит в банке?'),
     mission = 300000;
 let money,
     budgetDay,
     expenses = [],
-    addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую'),
     targetMonth;
 
 
@@ -18,6 +16,7 @@ const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n) && (n > 0);
 };
 
+// Запросы данных от пользователя
 const start = function() {
     do {
         money = +prompt('Ваш месячный доход?');
@@ -25,25 +24,29 @@ const start = function() {
     while (!isNumber(money));
 };
 start();
-
-const showTypeOf = function(data) {
-    console.log(data, typeof(data));
-};
+const deposit = confirm('Есть ли у вас депозит в банке?');
+let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
 
 const getExpensesMonth = function() {
     let sum = 0;
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0, j = 0; i < 2; i++) {
         expenses[i] = prompt('Введите обязательную статью расходов?', 'Продукты');
         do {
-            sum += +prompt('Во сколько это обойдется?');
+            j = +prompt('Во сколько это обойдется?');
         }
-        while (!isNumber(sum));
+        while (!isNumber(j));
+        sum += j;
     }
     console.log(expenses);
     return sum;
 };
 const expensesAmount = getExpensesMonth();
+
+// Определение типа переменой
+const showTypeOf = function(data) {
+    console.log(data, typeof(data));
+};
 
 // Определение месячного бюджета
 const getAccumulatedMonth = function() {
