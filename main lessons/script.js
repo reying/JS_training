@@ -1,22 +1,13 @@
 'use strict';
-
-/* Присвоение значений переменным: */
-const income = 'фриланс',
-    mission = 200000;
 let money,
-    budgetDay,
     expenses = [],
     targetMonth;
-
-
-/* Вычисления */
 
 // Ф-я проверки на числовой тип
 const isNumber = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n) && (n > 0);
 };
 
-// Запросы данных от пользователя
 const start = function() {
     do {
         money = +prompt('Ваш месячный доход?');
@@ -24,14 +15,33 @@ const start = function() {
     while (!isNumber(money));
 };
 start();
-const deposit = confirm('Есть ли у вас депозит в банке?');
-let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+
+/* Присвоение значений переменным: */
+let appData = {
+    income: {},
+    addIncom: [],
+    expenses: {},
+    addExpenses: [],
+    deposit: false,
+    mission: 300000,
+    period: 3,
+    asking: function() {
+        appData.deposit = confirm('Есть ли у вас депозит в банке?');
+        const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
+        appData.addExpenses = addExpenses.toLowerCase().split(', ');
+    }
+};
+
+
+
+
+/* Вычисления */
 
 const getExpensesMonth = function() {
     let sum = 0;
 
     for (let i = 0, j = 0; i < 2; i++) {
-        expenses[i] = prompt('Введите обязательную статью расходов?', 'Продукты');
+        expenses[i] = prompt('Введите обязательную статью расходов?', 'Продукты').trim();
         do {
             j = +prompt('Во сколько это обойдется?');
         }
@@ -56,7 +66,7 @@ const accumulatedMonth = getAccumulatedMonth();
 
 // Определение периода достижения цели в мес-х
 const getTargetMonth = function() {
-    return Math.ceil(mission / accumulatedMonth);
+    return Math.ceil(appData.mission / accumulatedMonth);
 };
 if (isNumber(getTargetMonth())) {
     targetMonth = 'Период достижения цели: ' + getTargetMonth() + ' мес.';
@@ -64,7 +74,7 @@ if (isNumber(getTargetMonth())) {
     targetMonth = 'Цель не будет достигнута';
 }
 
-budgetDay = Math.floor(accumulatedMonth / 30); // Определение дневного бюджета
+const budgetDay = Math.floor(accumulatedMonth / 30); // Определение дневного бюджета
 
 // Ф-я определения уровня дохода
 const getStatusIncome = function() {
@@ -82,11 +92,11 @@ const getStatusIncome = function() {
 
 /* Вывод в консоль */
 showTypeOf(money);
-showTypeOf(income);
-showTypeOf(deposit);
+showTypeOf(appData.income);
+showTypeOf(appData.deposit);
 
-console.log('Цель - заработать', mission, 'рублей');
-console.log(addExpenses.toLowerCase().split(', '));
+console.log('Цель - заработать', appData.mission, 'рублей');
+
 console.log('Бюджет на месяц, с учетом расходов:', accumulatedMonth, 'руб.');
 console.log(targetMonth);
 console.log('Бюджет на день:', budgetDay, 'руб.');
