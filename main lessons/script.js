@@ -2,7 +2,7 @@
 
 /* Присвоение значений переменным: */
 const income = 'фриланс',
-    mission = 300000;
+    mission = 200000;
 let money,
     budgetDay,
     expenses = [],
