@@ -19,6 +19,7 @@ let appData = {
     budget: money,
     budgetDay: 0,
     budgetMonth: 0,
+    expensesMonth: 0,
     income: {},
     addIncom: [],
     expenses: {},
@@ -41,15 +42,16 @@ let appData = {
     },
     // определение суммы обязательных расходов
     getExpensesMonth: function() {
-        let sum = 0;
+        // let sum = 0;
+
         for (let key in appData.expenses) {
-            sum += appData.expenses[key];
+            appData.expensesMonth += appData.expenses[key];
         }
-        return sum;
+        return appData.expensesMonth;
     },
     // определение месячного бюджета
     getBudget: function() {
-        appData.budgetMonth = appData.budget - appData.getExpensesMonth();
+        appData.budgetMonth = appData.budget - appData.expensesMonth;
         appData.budgetDay = Math.floor(appData.budgetMonth / 30);
 
     },
@@ -93,7 +95,7 @@ appData.getTargetMonth();
 // console.log('Бюджет на месяц, с учетом расходов:', appData.budgetMonth, 'руб.');
 // console.log('Бюджет на день:', appData.budgetDay, 'руб.');
 
-console.log('Расходы за месяц:', appData.getExpensesMonth(), 'руб.');
+console.log('Расходы за месяц:', appData.expensesMonth, 'руб.');
 console.log(appData.achievedTarget());
 console.log(appData.getStatusIncome());
 
