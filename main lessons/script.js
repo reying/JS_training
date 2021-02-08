@@ -42,8 +42,6 @@ let appData = {
     },
     // определение суммы обязательных расходов
     getExpensesMonth: function() {
-        // let sum = 0;
-
         for (let key in appData.expenses) {
             appData.expensesMonth += appData.expenses[key];
         }
