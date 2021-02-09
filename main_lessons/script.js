@@ -29,9 +29,54 @@ const checkingRequestedText = function(variable, question, value) {
     return variable;
 };
 
-// Получение DOM элементов
-const startCalc = document.getElementById('start');
+// Получение DOM элементов:
+// на ввод
+const btnStartCalc = document.getElementById('start'),
+    btnCancel = document.getElementById('cancel'),
+    btnAddIncome = document.querySelector('.income').getElementsByTagName('button'),
+    btnAddExpenses = document.querySelector('.expenses').getElementsByTagName('button'),
+    depositCheck = document.querySelector('#deposit-check'),
+    addIncomeItem = document.querySelectorAll('.additional_income-item'),
+    incomeTitle = document.querySelectorAll('.income-items > .income-title'),
+    incomeAmount = document.querySelectorAll('.income-items > .income-amount'),
+    expensesTitle = document.querySelectorAll('.expenses-items > .expenses-title'),
+    expensesAmount = document.querySelectorAll('.expenses-items > .expenses-amount'),
+    addExpensesItem = document.querySelector('.additional_expenses-item'),
+    depositAmount = document.querySelector('.deposit-amount'),
+    depositPercent = document.querySelector('.deposit-percent'),
+    targetAmount = document.querySelector('.target-amount'),
+    periodSelect = document.querySelector('.period-select');
+// на вывод
+let budgetMonthValue = document.getElementsByClassName('budget_month-value'),
+    budgetDayValue = document.getElementsByClassName('budget_day-value'),
+    expensesMonthValue = document.getElementsByClassName('expenses_month-value'),
+    addIncomeValue = document.getElementsByClassName('additional_income-value'),
+    addExpensesValue = document.getElementsByClassName('additional_expenses-value'),
+    incomePeriodValue = document.getElementsByClassName('income_period-value'),
+    targetMonthValue = document.getElementsByClassName('target_month-value');
 
+console.log(btnStartCalc);
+console.log(btnCancel);
+console.log(btnAddIncome);
+console.log(btnAddExpenses);
+console.log(depositCheck);
+console.log(addIncomeItem);
+console.log(incomeTitle);
+console.log(incomeAmount);
+console.log(expensesTitle);
+console.log(expensesAmount);
+console.log(addExpensesItem);
+console.log(depositAmount);
+console.log(depositPercent);
+console.log(targetAmount);
+console.log(periodSelect);
+console.log(budgetMonthValue);
+console.log(budgetDayValue);
+console.log(expensesMonthValue);
+console.log(addIncomeValue);
+console.log(addExpensesValue);
+console.log(incomePeriodValue);
+console.log(targetMonthValue);
 
 // Начало программы
 let money;
