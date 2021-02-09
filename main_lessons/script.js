@@ -7,7 +7,11 @@ const isNumber = function(n) {
 // Проверка на число запрашиваемых даных
 const checkingRequestedNumber = function(variable, question, value) {
     do {
-        variable = +prompt(question, value).trim();
+        variable = prompt(question, value);
+        if (variable === null) {
+            break;
+        }
+        variable = +variable.trim();
     }
     while (!isNumber(variable));
     return variable;
@@ -15,7 +19,11 @@ const checkingRequestedNumber = function(variable, question, value) {
 // Проверка на текст запрашиваемых даных
 const checkingRequestedText = function(variable, question, value) {
     do {
-        variable = prompt(question, value).trim();
+        variable = prompt(question, value);
+        if (variable === null) {
+            break;
+        }
+        variable = variable.trim();
     }
     while (isNumber(variable) || variable === '');
     return variable;
@@ -26,7 +34,11 @@ const checkingRequestedText = function(variable, question, value) {
 let money;
 const start = function() {
     do {
-        money = +prompt('Ваш месячный доход?', 50000);
+        money = prompt('Ваш месячный доход?', 50000);
+        if (money === null) {
+            break;
+        }
+        money = +money;
     }
     while (!isNumber(money));
 };
@@ -60,8 +72,14 @@ let appData = {
         }
 
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
-        const addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
-        appData.addExpenses = addExpenses.toLowerCase().split(', ');
+
+        let addExpenses;
+        addExpenses = checkingRequestedText(addExpenses,
+            'Укажите возможные расходы за рассчитываемый период через запятую');
+        if (addExpenses !== null && addExpenses !== '') {
+            appData.addExpenses = addExpenses.toLowerCase().split(',');
+        }
+
         for (let i = 0, ex = 0, vel = 0; i < 2; i++) {
             ex = checkingRequestedText(ex, 'Введите обязательную статью расходов?', 'Продукты');
             vel = checkingRequestedNumber(vel, 'Во сколько это обойдется?', 8000);
@@ -127,31 +145,17 @@ appData.getBudget();
 appData.getTargetMonth();
 appData.getInfoDeposit();
 
-
-// console.log('Цель - заработать', appData.mission, 'рублей');
-// console.log('Месячный доход:', money);
-// console.log('Бюджет на месяц, с учетом расходов:', appData.budgetMonth, 'руб.');
-// console.log('Бюджет на день:', appData.budgetDay, 'руб.');
-
 /* Вывод в консоль */
 console.log('Расходы за месяц:', appData.expensesMonth, 'руб.');
 console.log(appData.achievedTarget());
 console.log(appData.getStatusIncome());
 
-// console.log('');
-// console.log('Наша программа включает в себя данные:');
-// for (let key in appData) {
-//     console.log(key, appData[key]);
-// }
-
-
 // Первый способ вывода addExpenses
 const transformedAddExpenses = function() {
     const upPer = function(value) {
-        return value[0].toUpperCase() + value.substr(1);
+        return value[0].toUpperCase() + value.substring(1);
     };
-    let result = appData.addExpenses.map(upPer);
-    return result.join(', ');
+    return appData.addExpenses.map(upPer).join(', ');
 };
 
 // Второй способ вывода addExpenses
