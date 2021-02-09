@@ -29,6 +29,9 @@ const checkingRequestedText = function(variable, question, value) {
     return variable;
 };
 
+// Получение DOM элементов
+const startCalc = document.getElementById('start');
+
 
 // Начало программы
 let money;
@@ -152,27 +155,14 @@ console.log(appData.getStatusIncome());
 
 // Первый способ вывода addExpenses
 const transformedAddExpenses = function() {
-    const upPer = function(value) {
-        return value[0].toUpperCase() + value.substring(1);
-    };
-    return appData.addExpenses.map(upPer).join(', ');
+    if (appData.addExpenses.length === 0) {
+        return 'Возможные расходы не были введены!';
+    } else {
+        const upPer = function(value) {
+            return value[0].toUpperCase() + value.substring(1);
+        };
+        return appData.addExpenses.map(upPer).join(', ');
+    }
 };
-
-// Второй способ вывода addExpenses
-// const transformedAddExpenses = function() {
-//     let sum;
-
-//     for (let i = 0; i < appData.addExpenses.length; i++) {
-//         let str = appData.addExpenses[i];
-
-//         str = str[0].toUpperCase() + str.slice(1);
-//         if (i === appData.addExpenses.length - 1) {
-//             sum += str;
-//         } else {
-//             sum += str + ', ';
-//         }
-//     }
-//     return sum.replace('undefined', '');
-// };
 
 console.log(transformedAddExpenses());
