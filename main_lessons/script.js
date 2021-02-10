@@ -33,8 +33,8 @@ const checkingRequestedText = function(variable, question, value) {
 // на ввод
 const btnStartCalc = document.getElementById('start'),
     btnCancel = document.getElementById('cancel'),
-    btnAddIncome = document.querySelector('.income').getElementsByTagName('button'),
-    btnAddExpenses = document.querySelector('.expenses').getElementsByTagName('button'),
+    btnAddIncome = document.getElementsByTagName('button')[0],
+    btnAddExpenses = document.getElementsByTagName('button')[1],
     depositCheck = document.querySelector('#deposit-check'),
     addIncomeItem = document.querySelectorAll('.additional_income-item'),
     incomeTitle = document.querySelectorAll('.income-items > .income-title'),
@@ -47,13 +47,13 @@ const btnStartCalc = document.getElementById('start'),
     targetAmount = document.querySelector('.target-amount'),
     periodSelect = document.querySelector('.period-select');
 // на вывод
-let budgetMonthValue = document.getElementsByClassName('budget_month-value'),
-    budgetDayValue = document.getElementsByClassName('budget_day-value'),
-    expensesMonthValue = document.getElementsByClassName('expenses_month-value'),
-    addIncomeValue = document.getElementsByClassName('additional_income-value'),
-    addExpensesValue = document.getElementsByClassName('additional_expenses-value'),
-    incomePeriodValue = document.getElementsByClassName('income_period-value'),
-    targetMonthValue = document.getElementsByClassName('target_month-value');
+let budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
+    budgetDayValue = document.getElementsByClassName('budget_day-value')[0],
+    expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0],
+    addIncomeValue = document.getElementsByClassName('additional_income-value')[0],
+    addExpensesValue = document.getElementsByClassName('additional_expenses-value')[0],
+    incomePeriodValue = document.getElementsByClassName('income_period-value')[0],
+    targetMonthValue = document.getElementsByClassName('target_month-value')[0];
 
 console.log(btnStartCalc);
 console.log(btnCancel);
