@@ -7,11 +7,7 @@ const isNumber = function(n) {
 // Проверка на число запрашиваемых даных
 const checkingRequestedNumber = function(variable, question, value) {
     do {
-        variable = prompt(question, value);
-        if (variable === null) {
-            break;
-        }
-        variable = +variable.trim();
+        variable = +prompt(question, value);
     }
     while (!isNumber(variable));
     return variable;
@@ -20,10 +16,11 @@ const checkingRequestedNumber = function(variable, question, value) {
 const checkingRequestedText = function(variable, question, value) {
     do {
         variable = prompt(question, value);
-        if (variable === null) {
-            break;
+        if (variable !== null) {
+            variable = variable.trim();
+        } else {
+            checkingRequestedText(variable, question, value);
         }
-        variable = variable.trim();
     }
     while (isNumber(variable) || variable === '');
     return variable;
@@ -34,11 +31,7 @@ const checkingRequestedText = function(variable, question, value) {
 let money;
 const start = function() {
     do {
-        money = prompt('Ваш месячный доход?', 50000);
-        if (money === null) {
-            break;
-        }
-        money = +money;
+        money = +prompt('Ваш месячный доход?', 50000);
     }
     while (!isNumber(money));
 };
@@ -157,22 +150,5 @@ const transformedAddExpenses = function() {
     };
     return appData.addExpenses.map(upPer).join(', ');
 };
-
-// Второй способ вывода addExpenses
-// const transformedAddExpenses = function() {
-//     let sum;
-
-//     for (let i = 0; i < appData.addExpenses.length; i++) {
-//         let str = appData.addExpenses[i];
-
-//         str = str[0].toUpperCase() + str.slice(1);
-//         if (i === appData.addExpenses.length - 1) {
-//             sum += str;
-//         } else {
-//             sum += str + ', ';
-//         }
-//     }
-//     return sum.replace('undefined', '');
-// };
 
 console.log(transformedAddExpenses());
