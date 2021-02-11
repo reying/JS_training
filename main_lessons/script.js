@@ -1,33 +1,33 @@
 'use strict';
 
-// Ф-я проверки на числовой тип
-const isNumber = function(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n) && (n > 0);
-};
-// Проверка на число запрашиваемых даных
-const checkingRequestedNumber = function(variable, question, value) {
-    do {
-        variable = prompt(question, value);
-        if (variable === null) {
-            break;
-        }
-        variable = +variable.trim();
-    }
-    while (!isNumber(variable));
-    return variable;
-};
-// Проверка на текст запрашиваемых даных
-const checkingRequestedText = function(variable, question, value) {
-    do {
-        variable = prompt(question, value);
-        if (variable === null) {
-            break;
-        }
-        variable = variable.trim();
-    }
-    while (isNumber(variable) || variable === '');
-    return variable;
-};
+// // Ф-я проверки на числовой тип
+// const isNumber = function(n) {
+//     return !isNaN(parseFloat(n)) && isFinite(n) && (n > 0);
+// };
+// // Проверка на число запрашиваемых даных
+// const checkingRequestedNumber = function(variable, question, value) {
+//     do {
+//         variable = prompt(question, value);
+//         if (variable === null) {
+//             break;
+//         }
+//         variable = +variable.trim();
+//     }
+//     while (!isNumber(variable));
+//     return variable;
+// };
+// // Проверка на текст запрашиваемых даных
+// const checkingRequestedText = function(variable, question, value) {
+//     do {
+//         variable = prompt(question, value);
+//         if (variable === null) {
+//             break;
+//         }
+//         variable = variable.trim();
+//     }
+//     while (isNumber(variable) || variable === '');
+//     return variable;
+// };
 
 // Получение DOM элементов:
 // на ввод
@@ -56,8 +56,6 @@ let budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
     incomePeriodValue = document.getElementsByClassName('income_period-value')[0],
     targetMonthValue = document.getElementsByClassName('target_month-value')[0];
 
-let digitalInputs = document.querySelectorAll('input[placeholder="Сумма"]');
-
 
 // Начало программы
 btnStart.disabled = true;
@@ -79,18 +77,14 @@ let appData = {
     start: function() {
         appData.resettingData();
 
-
         appData.budget = +salaryAmount.value;
 
         appData.getExpenses();
         appData.getIncome();
-
         appData.getExpensesMonth();
         appData.getBudget();
         appData.getAddExpenses();
         appData.getAddIncome();
-        // appData.getTargetMonth();
-        // appData.getInfoDeposit();
 
         appData.showResult();
     },
@@ -119,7 +113,6 @@ let appData = {
         if (incomeItems.length === 3) {
             btnAddIncome.style.display = 'none';
         }
-        digitalInputs = document.querySelectorAll('input[placeholder="Сумма"]');
     },
     // добавление строк обязательных расходов (max 3)
     addExpensesBlock: function() {
@@ -131,7 +124,6 @@ let appData = {
         if (expensesItems.length === 3) {
             btnAddExpenses.style.display = 'none';
         }
-        digitalInputs = document.querySelectorAll('input[placeholder="Сумма"]');
     },
     // получение данных об обязательных статьях расходов
     getExpenses: function() {
@@ -203,29 +195,33 @@ let appData = {
         }
     },
     // определение возможности достижения цели
-    achievedTarget: function() {
-        let targetMonth;
-        if (isNumber(appData.getTargetMonth())) {
-            targetMonth = 'Период достижения цели: ' + appData.getTargetMonth() + ' мес.';
-        } else {
-            targetMonth = 'Цель не будет достигнута';
-        }
-        return targetMonth;
-    },
-    getInfoDeposit: function() {
-        if (appData.deposit) {
-            appData.percentDeposit = checkingRequestedNumber(appData.percentDeposit, 'Какой годовой процент?', 6);
+    // achievedTarget: function() {
+    //     let targetMonth;
+    //     if (isNumber(appData.getTargetMonth())) {
+    //         targetMonth = 'Период достижения цели: ' + appData.getTargetMonth() + ' мес.';
+    //     } else {
+    //         targetMonth = 'Цель не будет достигнута';
+    //     }
+    //     return targetMonth;
+    // },
+    // getInfoDeposit: function() {
+    //     if (appData.deposit) {
+    //         appData.percentDeposit = checkingRequestedNumber(appData.percentDeposit, 'Какой годовой процент?', 6);
 
-            appData.moneyDeposit = checkingRequestedNumber(appData.moneyDeposit, 'Какая сумма заложена?', 10000);
-        }
-    },
+    //         appData.moneyDeposit = checkingRequestedNumber(appData.moneyDeposit, 'Какая сумма заложена?', 10000);
+    //     }
+    // },
+
+    // вычисление периода достижения цели в месяцах
     calcPeriodTargetMonth: function() {
         return appData.budgetMonth * periodSelect.value;
     },
+    // получение значения периода расчета div от range
     getCalcPeriod: function() {
         periodSelect = document.querySelector('.period-select');
         periodAmount.textContent = periodSelect.value;
     },
+    // проверка наличия значения месячного дохода
     checkSalaryAmount: function() {
         salaryAmount = document.querySelector('.salary-amount');
         salaryAmount.value = salaryAmount.value.replace(/[^\d]/g, '');
@@ -253,51 +249,39 @@ let appData = {
 };
 
 /* События */
-
 salaryAmount.addEventListener('input', appData.checkSalaryAmount);
 btnStart.addEventListener('click', appData.start);
 btnAddExpenses.addEventListener('click', appData.addExpensesBlock);
 btnAddIncome.addEventListener('click', appData.addIncomeBlock);
 periodSelect.addEventListener('input', appData.getCalcPeriod);
 
-// let digitalInputs = document.querySelectorAll('input[placeholder="Сумма"]');
-// let noText = function(elem) {
-//     // digitalInputs = document.querySelectorAll('input[placeholder="Сумма"]');
-//     digitalInputs[elem].value = digitalInputs[elem].value.replace(/[^\d]/g, '');
-// };
-
-digitalInputs[1].addEventListener('input', function() {
-    this.value = this.value.replace(/[^\d]/g, '');
-});
-digitalInputs[2].addEventListener('input', function() {
-    this.value = this.value.replace(/[^\d]/g, '');
-});
-digitalInputs[3].addEventListener('input', function() {
-    this.value = this.value.replace(/[^\d]/g, '');
-});
-digitalInputs[4].addEventListener('input', function() {
-    this.value = this.value.replace(/[^\d]/g, '');
-});
-digitalInputs[5].addEventListener('input', function() {
-    this.value = this.value.replace(/[^\d]/g, '');
-});
-digitalInputs[6].addEventListener('input', function() {
-    this.value = this.value.replace(/[^\d]/g, '');
-});
-digitalInputs[7].addEventListener('input', function() {
-    this.value = this.value.replace(/[^\d]/g, '');
-});
-
-
-
-
-const transformedAddExpenses = function() {
-    if (appData.addExpenses.length === 0) {
-        return 'Возможные расходы не были введены!';
-    } else {
-        const upPer = function(value) {
-            return value[0].toUpperCase() + value.substring(1);
-        };
-        return appData.addExpenses.map(upPer).join(', ');
+// Запреты на ввод для сумм и наименований
+document.addEventListener('click', function(event) {
+    let elem = event.target;
+    if (elem.placeholder === 'Сумма') {
+        elem.addEventListener('input', function() {
+            this.value = this.value.replace(/[^\d]/g, '');
+        });
     }
-};
+    if (elem.placeholder === 'Наименование') {
+        elem.addEventListener('input', function() {
+            this.value = this.value.replace(/[^А-я\s,]/g, '');
+        });
+        elem.addEventListener('blur', function() {
+            this.value = this.value.trim();
+        });
+
+    }
+});
+
+
+// const transformedAddExpenses = function() {
+//     if (appData.addExpenses.length === 0) {
+//         return 'Возможные расходы не были введены!';
+//     } else {
+//         const upPer = function(value) {
+//             return value[0].toUpperCase() + value.substring(1);
+//         };
+//         return appData.addExpenses.map(upPer).join(', ');
+//     }
+// };
