@@ -45,6 +45,7 @@ let btnStart = document.getElementById('start'),
     depositPercent = document.querySelector('.deposit-percent'),
     targetAmount = document.querySelector('.target-amount'),
     periodSelect = document.querySelector('.period-select'),
+    periodAmount = document.querySelector('.period-amount'),
     salaryAmount = document.querySelector('.salary-amount');
 // на вывод
 let budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
@@ -57,7 +58,7 @@ let budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
 
 
 // Начало программы
-
+btnStart.disabled = true;
 /* Присвоение значений переменным: */
 let appData = {
     budget: 0,
@@ -74,11 +75,9 @@ let appData = {
     moneyDeposit: 0,
     // запуск программы
     start: function() {
+        appData.resettingData();
 
-        if (salaryAmount.value === '') {
-            alert('Ошибка, поле "Месячный доход" должно быть заполнено!');
-            return;
-        }
+
         appData.budget = +salaryAmount.value;
 
         appData.getExpenses();
@@ -101,7 +100,12 @@ let appData = {
         addExpensesValue.value = appData.addExpenses.join(', ');
         addIncomeValue.value = appData.addIncome.join(', ');
         targetMonthValue.value = appData.getTargetMonth();
-        incomePeriodValue.value = appData.calcPeriod();
+        incomePeriodValue.value = appData.calcPeriodTargetMonth();
+
+        periodSelect.addEventListener('input', function() {
+            incomePeriodValue = document.getElementsByClassName('income_period-value')[0];
+            incomePeriodValue.value = appData.calcPeriodTargetMonth();
+        });
     },
     // добавление строк дополнительных доходов (max 3)
     addIncomeBlock: function() {
@@ -207,18 +211,47 @@ let appData = {
             appData.moneyDeposit = checkingRequestedNumber(appData.moneyDeposit, 'Какая сумма заложена?', 10000);
         }
     },
-    calcPeriod: function() {
+    calcPeriodTargetMonth: function() {
         return appData.budgetMonth * periodSelect.value;
+    },
+    getCalcPeriod: function() {
+        periodSelect = document.querySelector('.period-select');
+        periodAmount.textContent = periodSelect.value;
+    },
+    checkSalaryAmount: function() {
+        salaryAmount = document.querySelector('.salary-amount');
+        salaryAmount.value = salaryAmount.value.trim();
+        if (salaryAmount.value === '') {
+            btnStart.disabled = true;
+        } else {
+            btnStart.disabled = false;
+        }
+    },
+    resettingData: function() {
+        appData.budget = 0;
+        appData.budgetDay = 0;
+        appData.budgetMonth = 0;
+        appData.expensesMonth = 0;
+        appData.income = {};
+        appData.incomeMonth = 0;
+        appData.addIncome = [];
+        appData.expenses = {};
+        appData.addExpenses = [];
+        appData.deposit = false;
+        appData.percentDeposit = 0;
+        appData.moneyDeposit = 0;
     }
 };
 
 /* Вычисления */
 
+salaryAmount.addEventListener('input', appData.checkSalaryAmount);
 btnStart.addEventListener('click', appData.start);
 btnAddExpenses.addEventListener('click', appData.addExpensesBlock);
 btnAddIncome.addEventListener('click', appData.addIncomeBlock);
+periodSelect.addEventListener('input', appData.getCalcPeriod);
 
-
+console.dir(btnStart);
 
 const transformedAddExpenses = function() {
     if (appData.addExpenses.length === 0) {
