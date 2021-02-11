@@ -105,8 +105,8 @@ let appData = {
     },
     // добавление строк дополнительных доходов (max 3)
     addIncomeBlock: function() {
-        let cloneExpensesItems = expensesItems[0].cloneNode(true);
-        expensesItems[0].parentNode.insertBefore(cloneExpensesItems, btnAddIncome);
+        let cloneIncomeItems = incomeItems[0].cloneNode(true);
+        incomeItems[0].parentNode.insertBefore(cloneIncomeItems, btnAddIncome);
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length === 3) {
             btnAddIncome.style.display = 'none';
@@ -114,8 +114,8 @@ let appData = {
     },
     // добавление строк обязательных расходов (max 3)
     addExpensesBlock: function() {
-        let cloneIncomeItems = incomeItems[0].cloneNode(true);
-        incomeItems[0].parentNode.insertBefore(cloneIncomeItems, btnAddExpenses);
+        let cloneExpensesItems = expensesItems[0].cloneNode(true);
+        expensesItems[0].parentNode.insertBefore(cloneExpensesItems, btnAddExpenses);
         expensesItems = document.querySelectorAll('.expenses-items');
         if (expensesItems.length === 3) {
             btnAddExpenses.style.display = 'none';
