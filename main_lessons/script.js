@@ -103,10 +103,19 @@ let appData = {
         targetMonthValue.value = appData.getTargetMonth();
         incomePeriodValue.value = appData.calcPeriod();
     },
+    // добавление строк дополнительных доходов (max 3)
+    addIncomeBlock: function() {
+        let cloneExpensesItems = expensesItems[0].cloneNode(true);
+        expensesItems[0].parentNode.insertBefore(cloneExpensesItems, btnAddIncome);
+        incomeItems = document.querySelectorAll('.income-items');
+        if (incomeItems.length === 3) {
+            btnAddIncome.style.display = 'none';
+        }
+    },
     // добавление строк обязательных расходов (max 3)
     addExpensesBlock: function() {
-        let cloneExpensesItems = expensesItems[0].cloneNode(true);
-        expensesItems[0].parentNode.insertBefore(cloneExpensesItems, btnAddExpenses);
+        let cloneIncomeItems = incomeItems[0].cloneNode(true);
+        incomeItems[0].parentNode.insertBefore(cloneIncomeItems, btnAddExpenses);
         expensesItems = document.querySelectorAll('.expenses-items');
         if (expensesItems.length === 3) {
             btnAddExpenses.style.display = 'none';
@@ -206,9 +215,8 @@ let appData = {
 /* Вычисления */
 
 btnStart.addEventListener('click', appData.start);
-
 btnAddExpenses.addEventListener('click', appData.addExpensesBlock);
-
+btnAddIncome.addEventListener('click', appData.addIncomeBlock);
 
 
 
