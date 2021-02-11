@@ -31,7 +31,7 @@ const checkingRequestedText = function(variable, question, value) {
 
 // Получение DOM элементов:
 // на ввод
-const btnStartCalc = document.getElementById('start'),
+let btnStart = document.getElementById('start'),
     btnCancel = document.getElementById('cancel'),
     btnAddIncome = document.getElementsByTagName('button')[0],
     btnAddExpenses = document.getElementsByTagName('button')[1],
@@ -55,51 +55,17 @@ let budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
     incomePeriodValue = document.getElementsByClassName('income_period-value')[0],
     targetMonthValue = document.getElementsByClassName('target_month-value')[0];
 
-console.log(btnStartCalc);
-console.log(btnCancel);
-console.log(btnAddIncome);
-console.log(btnAddExpenses);
-console.log(depositCheck);
-console.log(addIncomeItem);
-console.log(incomeTitle);
-console.log(incomeAmount);
-console.log(expensesTitle);
-console.log(expensesAmount);
-console.log(addExpensesItem);
-console.log(depositAmount);
-console.log(depositPercent);
-console.log(targetAmount);
-console.log(periodSelect);
-console.log(budgetMonthValue);
-console.log(budgetDayValue);
-console.log(expensesMonthValue);
-console.log(addIncomeValue);
-console.log(addExpensesValue);
-console.log(incomePeriodValue);
-console.log(targetMonthValue);
 
 // Начало программы
-let money;
-const start = function() {
-    do {
-        money = prompt('Ваш месячный доход?', 50000);
-        if (money === null) {
-            break;
-        }
-        money = +money;
-    }
-    while (!isNumber(money));
-};
-start();
 
 /* Присвоение значений переменным: */
 let appData = {
-    budget: money,
+    budget: 0,
     budgetDay: 0,
     budgetMonth: 0,
     expensesMonth: 0,
     income: {},
-    addIncom: [],
+    addIncome: [],
     expenses: {},
     addExpenses: [],
     deposit: false,
@@ -107,6 +73,22 @@ let appData = {
     moneyDeposit: 0,
     mission: 300000,
     period: 3,
+    start: function() {
+        do {
+            money = prompt('Ваш месячный доход?', 50000);
+            if (money === null) {
+                break;
+            }
+            money = +money;
+        }
+        while (!isNumber(money));
+
+        appData.asking();
+        appData.getExpensesMonth();
+        appData.getBudget();
+        appData.getTargetMonth();
+        appData.getInfoDeposit();
+    },
     asking: function() {
 
         if (confirm('Есть ли у вас дополнительный источник заработка?')) {
@@ -187,18 +169,13 @@ let appData = {
 };
 
 /* Вычисления */
-appData.asking();
-appData.getExpensesMonth();
-appData.getBudget();
-appData.getTargetMonth();
-appData.getInfoDeposit();
 
-/* Вывод в консоль */
-console.log('Расходы за месяц:', appData.expensesMonth, 'руб.');
-console.log(appData.achievedTarget());
-console.log(appData.getStatusIncome());
+btnStart.addEventListener('click', appData.start);
 
-// Первый способ вывода addExpenses
+
+
+
+
 const transformedAddExpenses = function() {
     if (appData.addExpenses.length === 0) {
         return 'Возможные расходы не были введены!';
@@ -209,5 +186,3 @@ const transformedAddExpenses = function() {
         return appData.addExpenses.map(upPer).join(', ');
     }
 };
-
-console.log(transformedAddExpenses());
