@@ -56,6 +56,8 @@ let budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
     incomePeriodValue = document.getElementsByClassName('income_period-value')[0],
     targetMonthValue = document.getElementsByClassName('target_month-value')[0];
 
+let digitalInputs = document.querySelectorAll('input[placeholder="Сумма"]');
+
 
 // Начало программы
 btnStart.disabled = true;
@@ -110,20 +112,26 @@ let appData = {
     // добавление строк дополнительных доходов (max 3)
     addIncomeBlock: function() {
         let cloneIncomeItems = incomeItems[0].cloneNode(true);
+        cloneIncomeItems.querySelectorAll('input')[0].value = '';
+        cloneIncomeItems.querySelectorAll('input')[1].value = '';
         incomeItems[0].parentNode.insertBefore(cloneIncomeItems, btnAddIncome);
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length === 3) {
             btnAddIncome.style.display = 'none';
         }
+        digitalInputs = document.querySelectorAll('input[placeholder="Сумма"]');
     },
     // добавление строк обязательных расходов (max 3)
     addExpensesBlock: function() {
         let cloneExpensesItems = expensesItems[0].cloneNode(true);
+        cloneExpensesItems.querySelectorAll('input')[0].value = '';
+        cloneExpensesItems.querySelectorAll('input')[1].value = '';
         expensesItems[0].parentNode.insertBefore(cloneExpensesItems, btnAddExpenses);
         expensesItems = document.querySelectorAll('.expenses-items');
         if (expensesItems.length === 3) {
             btnAddExpenses.style.display = 'none';
         }
+        digitalInputs = document.querySelectorAll('input[placeholder="Сумма"]');
     },
     // получение данных об обязательных статьях расходов
     getExpenses: function() {
@@ -220,6 +228,7 @@ let appData = {
     },
     checkSalaryAmount: function() {
         salaryAmount = document.querySelector('.salary-amount');
+        salaryAmount.value = salaryAmount.value.replace(/[^\d]/g, '');
         salaryAmount.value = salaryAmount.value.trim();
         if (salaryAmount.value === '') {
             btnStart.disabled = true;
@@ -243,7 +252,7 @@ let appData = {
     }
 };
 
-/* Вычисления */
+/* События */
 
 salaryAmount.addEventListener('input', appData.checkSalaryAmount);
 btnStart.addEventListener('click', appData.start);
@@ -251,7 +260,36 @@ btnAddExpenses.addEventListener('click', appData.addExpensesBlock);
 btnAddIncome.addEventListener('click', appData.addIncomeBlock);
 periodSelect.addEventListener('input', appData.getCalcPeriod);
 
-console.dir(btnStart);
+// let digitalInputs = document.querySelectorAll('input[placeholder="Сумма"]');
+// let noText = function(elem) {
+//     // digitalInputs = document.querySelectorAll('input[placeholder="Сумма"]');
+//     digitalInputs[elem].value = digitalInputs[elem].value.replace(/[^\d]/g, '');
+// };
+
+digitalInputs[1].addEventListener('input', function() {
+    this.value = this.value.replace(/[^\d]/g, '');
+});
+digitalInputs[2].addEventListener('input', function() {
+    this.value = this.value.replace(/[^\d]/g, '');
+});
+digitalInputs[3].addEventListener('input', function() {
+    this.value = this.value.replace(/[^\d]/g, '');
+});
+digitalInputs[4].addEventListener('input', function() {
+    this.value = this.value.replace(/[^\d]/g, '');
+});
+digitalInputs[5].addEventListener('input', function() {
+    this.value = this.value.replace(/[^\d]/g, '');
+});
+digitalInputs[6].addEventListener('input', function() {
+    this.value = this.value.replace(/[^\d]/g, '');
+});
+digitalInputs[7].addEventListener('input', function() {
+    this.value = this.value.replace(/[^\d]/g, '');
+});
+
+
+
 
 const transformedAddExpenses = function() {
     if (appData.addExpenses.length === 0) {
