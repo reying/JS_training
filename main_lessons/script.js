@@ -100,7 +100,7 @@ let appData = {
 
         periodSelect.addEventListener('input', function() {
             incomePeriodValue = document.getElementsByClassName('income_period-value')[0];
-            incomePeriodValue.value = this.calcPeriodTargetMonth();
+            incomePeriodValue.value = appData.calcPeriodTargetMonth();
         });
     },
     // добавление строк дополнительных доходов (max 3)
@@ -232,7 +232,6 @@ let appData = {
         }
     },
     resettingData: function() {
-        console.log('ok');
         this.budget = 0;
         this.budgetDay = 0;
         this.budgetMonth = 0;
