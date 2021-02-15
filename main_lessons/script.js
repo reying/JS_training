@@ -270,7 +270,6 @@ document.addEventListener('click', function(event) {
         elem.addEventListener('blur', function() {
             this.value = this.value.trim();
         });
-
     }
 });
 
