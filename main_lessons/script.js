@@ -29,7 +29,6 @@ let budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
 
 
 // Начало программы
-btnStart.disabled = true;
 
 
 const AppData = function() {
@@ -47,9 +46,7 @@ const AppData = function() {
     this.moneyDeposit = 0;
 };
 
-
 AppData.prototype.start = function() {
-
     this.budget = +salaryAmount.value;
 
     this.getExpenses();
@@ -61,6 +58,8 @@ AppData.prototype.start = function() {
 
     this.showResult();
     this.blocked();
+    btnAddIncome.disabled = true;
+    btnAddExpenses.disabled = true;
 };
 // вывод значений
 AppData.prototype.showResult = function() {
@@ -88,6 +87,7 @@ AppData.prototype.blocked = function() {
         btnStart.style.display = (btnStart.style.display === 'none') ? 'block' : 'none';
         btnCancel.style.display = (btnCancel.style.display === 'block') ? 'none' : 'block';
     }
+
 };
 // добавление строк дополнительных доходов (max 3)
 AppData.prototype.addIncomeBlock = function() {
@@ -218,43 +218,49 @@ AppData.prototype.reset = function() {
     this.blocked();
     this.resettingInputs();
     btnStart.disabled = true;
+    btnAddIncome.disabled = false;
+    btnAddExpenses.disabled = false;
 };
 
-const appData = new AppData();
+AppData.prototype.eventsListeners = function() {
+    btnStart.disabled = true;
+    // Запреты на ввод для сумм и наименований
+    document.addEventListener('click', function(event) {
+        let elem = event.target;
+        if (elem.placeholder === 'Сумма') {
+            elem.addEventListener('input', function() {
+                this.value = this.value.replace(/[^\d]/g, '');
+                if (elem === salaryAmount) {
+                    salaryAmount = document.querySelector('.salary-amount');
+                    let number = +salaryAmount.value;
+                    if (typeof number !== 'number' || number === 0) {
+                        btnStart.disabled = true;
+                    } else {
+                        btnStart.disabled = false;
+                    }
+                }
+            });
+        }
+        if (elem.placeholder === 'Наименование') {
+            elem.addEventListener('input', function() {
+                this.value = this.value.replace(/[^А-я\s,]/g, '');
+            });
+            elem.addEventListener('blur', function() {
+                this.value = this.value.trim();
+            });
+        }
+    });
+
+    /* События */
+    salaryAmount.addEventListener('input', this.checkSalaryAmount);
+    btnStart.addEventListener('click', this.start.bind(this));
+    btnCancel.addEventListener('click', this.reset.bind(this));
+    btnAddExpenses.addEventListener('click', this.addExpensesBlock);
+    btnAddIncome.addEventListener('click', this.addIncomeBlock);
+    periodSelect.addEventListener('input', this.getCalcPeriod);
+};
+
+let appData = new AppData();
+appData.eventsListeners();
 
 console.log(appData);
-
-// Запреты на ввод для сумм и наименований
-document.addEventListener('click', function(event) {
-    let elem = event.target;
-    if (elem.placeholder === 'Сумма') {
-        elem.addEventListener('input', function() {
-            this.value = this.value.replace(/[^\d]/g, '');
-            if (elem === salaryAmount) {
-                salaryAmount = document.querySelector('.salary-amount');
-                let number = +salaryAmount.value;
-                if (typeof number !== 'number' || number === 0) {
-                    btnStart.disabled = true;
-                } else {
-                    btnStart.disabled = false;
-                }
-            }
-        });
-    }
-    if (elem.placeholder === 'Наименование') {
-        elem.addEventListener('input', function() {
-            this.value = this.value.replace(/[^А-я\s,]/g, '');
-        });
-        elem.addEventListener('blur', function() {
-            this.value = this.value.trim();
-        });
-    }
-});
-
-/* События */
-salaryAmount.addEventListener('input', appData.checkSalaryAmount);
-btnStart.addEventListener('click', appData.start.bind(appData));
-btnCancel.addEventListener('click', appData.reset.bind(appData));
-btnAddExpenses.addEventListener('click', appData.addExpensesBlock);
-btnAddIncome.addEventListener('click', appData.addIncomeBlock);
-periodSelect.addEventListener('input', appData.getCalcPeriod);
