@@ -133,20 +133,20 @@ let appData = {
     },
     getAddExpenses: function() {
         let addExpenses = addExpensesItem.value.split(',');
-        addExpenses.forEach(function(item) {
+        addExpenses.forEach(item => {
             item = item.trim();
             if (item !== '') {
                 this.addExpenses.push(item);
             }
-        }, this);
+        });
     },
     getAddIncome: function() {
-        addIncomeItem.forEach(function(item) {
+        addIncomeItem.forEach(item => {
             let itemValue = item.value.trim();
             if (itemValue !== '') {
                 this.addIncome.push(itemValue);
             }
-        }, this);
+        });
     },
     // определение суммы обязательных расходов
     getExpensesMonth: function() {
