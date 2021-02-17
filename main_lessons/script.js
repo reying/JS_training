@@ -76,41 +76,35 @@ class AppData {
         });
     }
     blocked() {
-            document.querySelectorAll('.data input[type=text]').forEach((item) => {
-                item.disabled = (item.disabled === false) ? true : false;
-            });
-            if (btnStart.style.display === '' || btnCancel.style.display === '') {
-                btnStart.style.display = 'none';
-                btnCancel.style.display = 'block';
-            } else {
-                btnStart.style.display = (btnStart.style.display === 'none') ? 'block' : 'none';
-                btnCancel.style.display = (btnCancel.style.display === 'block') ? 'none' : 'block';
-            }
+        document.querySelectorAll('.data input[type=text]').forEach((item) => {
+            item.disabled = (item.disabled === false) ? true : false;
+        });
+        if (btnStart.style.display === '' || btnCancel.style.display === '') {
+            btnStart.style.display = 'none';
+            btnCancel.style.display = 'block';
+        } else {
+            btnStart.style.display = (btnStart.style.display === 'none') ? 'block' : 'none';
+            btnCancel.style.display = (btnCancel.style.display === 'block') ? 'none' : 'block';
+        }
 
+    }
+
+    // добавление строк дополнительных доходов и обязательных расходов (max 3)
+    addIncExpBlocks(event) {
+        const elem = event.target.className.replaceAll('_', ' ').split(' ')[2];
+        const items = document.querySelectorAll(`.${elem}-items`);
+
+        const cloneItems = items[0].cloneNode(true);
+        cloneItems.querySelectorAll('input')[0].value = '';
+        cloneItems.querySelectorAll('input')[1].value = '';
+        items[0].parentNode.insertBefore(cloneItems, event.target);
+        if (document.querySelectorAll(`.${elem}-items`).length === 3) {
+            event.target.style.display = 'none';
         }
-        // добавление строк дополнительных доходов (max 3)
-    addIncomeBlock() {
-            const cloneIncomeItems = incomeItems[0].cloneNode(true);
-            cloneIncomeItems.querySelectorAll('input')[0].value = '';
-            cloneIncomeItems.querySelectorAll('input')[1].value = '';
-            incomeItems[0].parentNode.insertBefore(cloneIncomeItems, btnAddIncome);
-            incomeItems = document.querySelectorAll('.income-items');
-            if (incomeItems.length === 3) {
-                btnAddIncome.style.display = 'none';
-            }
-        }
-        // добавление строк обязательных расходов (max 3)
-    addExpensesBlock() {
-            const cloneExpensesItems = expensesItems[0].cloneNode(true);
-            cloneExpensesItems.querySelectorAll('input')[0].value = '';
-            cloneExpensesItems.querySelectorAll('input')[1].value = '';
-            expensesItems[0].parentNode.insertBefore(cloneExpensesItems, btnAddExpenses);
-            expensesItems = document.querySelectorAll('.expenses-items');
-            if (expensesItems.length === 3) {
-                btnAddExpenses.style.display = 'none';
-            }
-        }
-        // получение данных об обязательных статьях расходов
+
+    }
+
+    // получение данных об обязательных доходах и расходах
     getExpInc() {
         const count = (item) => {
             const startClass = item.className.split('-')[0];
@@ -129,14 +123,16 @@ class AppData {
         }
     }
 
+    // получение данных о возможных доходах и расходах
     getAddExpInc() {
         const count = (item) => {
             let className = '';
             if (item.className) {
-                className = item.className.replace('_', '-').split('-')[1];
+                className = item.className.replaceAll('_', '-').split('-')[1];
                 item = item.value.trim();
             } else { item = item.trim(); }
-            const expInc = (className !== 'income') ? 'addExpenses' : 'addIncome';
+            const expInc = (className !== 'income') ? 'addExpenses' : `add${className[0].toUpperCase() +
+                 className.substring(1)}`;
 
             if (item !== '') {
                 this[expInc].push(item);
@@ -258,8 +254,8 @@ class AppData {
         salaryAmount.addEventListener('input', this.checkSalaryAmount);
         btnStart.addEventListener('click', this.start.bind(this));
         btnCancel.addEventListener('click', this.reset.bind(this));
-        btnAddExpenses.addEventListener('click', this.addExpensesBlock);
-        btnAddIncome.addEventListener('click', this.addIncomeBlock);
+        btnAddExpenses.addEventListener('click', this.addIncExpBlocks);
+        btnAddIncome.addEventListener('click', this.addIncExpBlocks);
         periodSelect.addEventListener('input', this.getCalcPeriod);
     }
 
