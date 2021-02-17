@@ -50,8 +50,7 @@ class AppData {
     start() {
             this.budget = +salaryAmount.value;
 
-            this.getExpenses();
-            this.getIncome();
+            this.getExpInc();
             this.getExpensesMonth();
             this.getBudget();
             this.getAddExpenses();
@@ -113,23 +112,18 @@ class AppData {
             }
         }
         // получение данных об обязательных статьях расходов
-    getExpenses() {
-        expensesItems.forEach((item) => {
-            const itemExpenses = item.querySelector('.expenses-title').value;
-            const cashExpenses = item.querySelector('.expenses-amount').value;
-            if (itemExpenses !== '' && cashExpenses !== '') {
-                this.expenses[itemExpenses] = cashExpenses;
+    getExpInc() {
+        const count = (item) => {
+            const startClass = item.className.split('-')[0];
+            const itemTitle = item.querySelector(`.${startClass}-title`).value;
+            const itemAmount = item.querySelector(`.${startClass}-amount`).value;
+            if (itemTitle !== '' && itemAmount !== '') {
+                this[startClass][itemTitle] = itemAmount;
             }
-        });
-    }
-    getIncome() {
-        incomeItems.forEach((item) => {
-            const itemIncome = item.querySelector('.income-title').value;
-            const cashIncome = item.querySelector('.income-amount').value;
-            if (itemIncome !== '' && cashIncome !== '') {
-                this.income[itemIncome] = cashIncome;
-            }
-        });
+        };
+
+        expensesItems.forEach(count);
+        incomeItems.forEach(count);
 
         for (let key in this.income) {
             this.incomeMonth += +this.income[key];
