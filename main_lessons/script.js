@@ -53,8 +53,7 @@ class AppData {
             this.getExpInc();
             this.getExpensesMonth();
             this.getBudget();
-            this.getAddExpenses();
-            this.getAddIncome();
+            this.getAddExpInc();
 
             this.showResult();
             this.blocked();
@@ -130,25 +129,25 @@ class AppData {
         }
     }
 
-    getAddExpenses() {
-        const addExpenses = addExpensesItem.value.split(',');
-        addExpenses.forEach(item => {
-            item = item.trim();
+    getAddExpInc() {
+        const count = (item) => {
+            let className = '';
+            if (item.className) {
+                className = item.className.replace('_', '-').split('-')[1];
+                item = item.value.trim();
+            } else { item = item.trim(); }
+            const expInc = (className !== 'income') ? 'addExpenses' : 'addIncome';
+
             if (item !== '') {
-                this.addExpenses.push(item);
+                this[expInc].push(item);
             }
-        });
+        };
+
+        addExpensesItem.value.split(',').forEach(count);
+        addIncomeItem.forEach(count);
     }
 
-    getAddIncome() {
-            addIncomeItem.forEach(item => {
-                const itemValue = item.value.trim();
-                if (itemValue !== '') {
-                    this.addIncome.push(itemValue);
-                }
-            });
-        }
-        // определение суммы обязательных расходов
+    // определение суммы обязательных расходов
     getExpensesMonth() {
         for (let key in this.expenses) {
             this.expensesMonth += +this.expenses[key];
