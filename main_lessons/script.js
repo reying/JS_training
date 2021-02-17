@@ -57,6 +57,8 @@ class AppData {
 
             this.showResult();
             this.blocked();
+            btnStart.style.display = 'none';
+            btnCancel.style.display = 'block';
             btnAddIncome.disabled = true;
             btnAddExpenses.disabled = true;
         }
@@ -69,24 +71,11 @@ class AppData {
         addIncomeValue.value = this.addIncome.join(', ');
         targetMonthValue.value = this.getTargetMonth();
         incomePeriodValue.value = this.calcPeriodTargetMonth();
-
-        periodSelect.addEventListener('input', () => {
-            incomePeriodValue = document.getElementsByClassName('income_period-value')[0];
-            incomePeriodValue.value = this.calcPeriodTargetMonth();
-        });
     }
     blocked() {
         document.querySelectorAll('.data input[type=text]').forEach((item) => {
             item.disabled = (item.disabled === false) ? true : false;
         });
-        if (btnStart.style.display === '' || btnCancel.style.display === '') {
-            btnStart.style.display = 'none';
-            btnCancel.style.display = 'block';
-        } else {
-            btnStart.style.display = (btnStart.style.display === 'none') ? 'block' : 'none';
-            btnCancel.style.display = (btnCancel.style.display === 'block') ? 'none' : 'block';
-        }
-
     }
 
     // добавление строк дополнительных доходов и обязательных расходов (max 3)
@@ -101,7 +90,6 @@ class AppData {
         if (document.querySelectorAll(`.${elem}-items`).length === 3) {
             event.target.style.display = 'none';
         }
-
     }
 
     // получение данных об обязательных доходах и расходах
@@ -188,19 +176,21 @@ class AppData {
         this.moneyDeposit = 0;
     }
 
+    clearInputs() {
+        const count = (item) => {
+            const items = document.querySelectorAll(`.${item}-items`);
+            if (items.length > 1) {
+                for (let i = 1; i < items.length; i++) {
+                    items[i].remove();
+                }
+            }
+        };
+
+        ['income', 'expenses'].forEach(count);
+    }
+
     resettingInputs() {
-        incomeItems = document.querySelectorAll('.income-items');
-        if (incomeItems.length > 1) {
-            for (let i = 1; i < incomeItems.length; i++) {
-                incomeItems[i].remove();
-            }
-        }
-        expensesItems = document.querySelectorAll('.expenses-items');
-        if (expensesItems.length > 1) {
-            for (let i = 1; i < expensesItems.length; i++) {
-                expensesItems[i].remove();
-            }
-        }
+        this.clearInputs();
 
         btnAddIncome.style.display = 'block';
         btnAddExpenses.style.display = 'block';
@@ -216,6 +206,8 @@ class AppData {
         this.resettingData();
         this.blocked();
         this.resettingInputs();
+        btnStart.style.display = 'block';
+        btnCancel.style.display = 'none';
         btnStart.disabled = true;
         btnAddIncome.disabled = false;
         btnAddExpenses.disabled = false;
@@ -265,5 +257,3 @@ class AppData {
 
 const appData = new AppData();
 appData.eventsListeners();
-
-console.log(appData);
