@@ -21,7 +21,7 @@ let incomeItems = document.querySelectorAll('.income-items'),
     salaryAmount = document.querySelector('.salary-amount');
 
 // на вывод
-let budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
+const budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
     budgetDayValue = document.getElementsByClassName('budget_day-value')[0],
     expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0],
     addIncomeValue = document.getElementsByClassName('additional_income-value')[0],
@@ -198,6 +198,7 @@ class AppData {
         document.querySelectorAll('input').forEach((item) => {
             item.value = '';
         });
+        depositCheck.checked = false;
         periodSelect.value = 1;
         this.getCalcPeriod();
     }
