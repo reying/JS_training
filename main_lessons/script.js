@@ -147,7 +147,7 @@ class AppData {
     // определение месячного бюджета
     getBudget() {
         const monthDeposit = this.moneyDeposit * (this.percentDeposit / 100) / 12;
-        this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + monthDeposit;
+        this.budgetMonth = Math.floor(this.budget + this.incomeMonth - this.expensesMonth + monthDeposit);
         this.budgetDay = Math.floor(this.budgetMonth / 30);
     }
 
