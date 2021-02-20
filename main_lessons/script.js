@@ -70,6 +70,7 @@ class AppData {
             btnStart.style.display = 'none';
             btnCancel.style.display = 'block';
             this.blockedTow();
+
         }
         // вывод значений
     showResult() {
@@ -134,16 +135,7 @@ class AppData {
     }
 
     getInputDate() {
-        const restNum = (item) => {
-            if (localStorage[item.className]) {
-                const val = JSON.parse(localStorage[item.className]);
-
-                item.value = +val;
-                console.log(item.value, typeof item.value);
-            }
-        };
-
-        const restStr = (item) => {
+        const rest = (item) => {
             if (localStorage[item.className]) {
                 item.value = JSON.parse(localStorage[item.className]);
             }
@@ -155,7 +147,17 @@ class AppData {
                 const classItem = item[0].className.split('-')[0];
                 const btn = document.querySelector(`.${classItem}_add`);
                 if (arr.length > 1) {
-                    for (let i = 0; i < arr.length - 1; i++) { btn.click(); }
+                    if (btnCancel.style.display === 'block') {
+                        btn.disabled = false;
+                        for (let i = 0; i < arr.length - 1; i++) {
+                            btn.click();
+                        }
+                        btn.disabled = true;
+                    } else {
+                        for (let i = 0; i < arr.length - 1; i++) {
+                            btn.click();
+                        }
+                    }
                 }
                 for (let i = 0; i < arr.length; i++) {
                     const thisItems = document.querySelectorAll(`.${classItem}-items`)[i].querySelectorAll('input');
@@ -165,10 +167,10 @@ class AppData {
             }
         };
 
-        restNum(salaryAmount);
-        restStr(addExpensesItem);
-        restNum(targetAmount);
-        restNum(periodSelect);
+        rest(salaryAmount);
+        rest(addExpensesItem);
+        rest(targetAmount);
+        rest(periodSelect);
         this.getCalcPeriod();
         restAll(incomeItems);
         restAll(expensesItems);
@@ -432,6 +434,8 @@ class AppData {
 
         this.setCalcDataToStorage();
 
+        localStorage.clear();
+
         btnStart.style.display = 'block';
         btnCancel.style.display = 'none';
         btnStart.disabled = true;
@@ -494,6 +498,7 @@ class AppData {
             this.blockedTow();
         }
         this.getInputDate();
+        this.chechingSalaryAmount();
     }
 
     eventsListeners() {
