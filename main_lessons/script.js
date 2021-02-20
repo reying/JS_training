@@ -201,17 +201,13 @@ class AppData {
     }
 
     setCalcDataToStorage() {
-        if (this.calcResult.length === 0) {
-            localStorage.removeItem('calcData');
-        } else {
-            localStorage.calcData = JSON.stringify(this.calcResult);
-        }
-    }
-
-    getCalcDataFromStorage() {
-        JSON.parse(localStorage.calcData).forEach((item) => {
-            this.calcResult.push(item);
+        resulTotal.forEach((item) => {
+            const className = item.className.split(' ')[1];
+            const value = item.value;
+            localStorage[className] = JSON.stringify(value);
         });
+        localStorage.isLoad = JSON.stringify(true);
+        // }
     }
 
     setCookie(key, value, path, domain, secure) {
@@ -241,10 +237,24 @@ class AppData {
         this.setCookie('isLoad', true);
     }
 
+    clearCookie() {
+        const cookies = document.cookie.split(/;/);
+        for (let i = 0, len = cookies.length; i < len; i++) {
+            const cookie = cookies[i].split(/=/);
+            document.cookie = cookie[0] + "=;max-age=-1";
+        }
+    }
+
 
     blocked() {
         document.querySelectorAll('.data input[type=text]').forEach((item) => {
-            item.disabled = (item.disabled === false) ? true : false;
+            item.disabled = true;
+        });
+    }
+
+    unblocked() {
+        document.querySelectorAll('.data input[type=text]').forEach((item) => {
+            item.disabled = false;
         });
     }
 
@@ -429,12 +439,13 @@ class AppData {
 
     reset() {
         this.resettingData();
-        this.blocked();
+        this.unblocked();
         this.resettingInputs();
 
         this.setCalcDataToStorage();
 
         localStorage.clear();
+        this.clearCookie();
 
         btnStart.style.display = 'block';
         btnCancel.style.display = 'none';
@@ -486,17 +497,61 @@ class AppData {
         elem.addEventListener('input', this.setInputData);
     }
 
-    restoreCalcData() {
-        if (localStorage.calcData && localStorage.calcData.value !== []) {
-            this.getCalcDataFromStorage();
-            for (let i = 0; i < resulTotal.length; i++) {
-                resulTotal[i].value = this.calcResult[i];
+    chechingCookie() {
+        if (document.cookie) {
+            const arrCookie = [];
+            document.cookie.split('; ').forEach((item) => {
+                arrCookie.push(item.split('=')[0], item.split('=')[1]);
+            });
+
+            const arrStore = [];
+            let arrNewStore = [];
+            for (let key in localStorage) {
+                arrStore.push(key, localStorage[key]);
             }
+            for (let i = 0; i < arrStore.length - 12; i++) {
+                arrNewStore.push(arrStore[i]);
+            }
+            for (let i = 1; i < arrNewStore.length; i += 2) {
+                const j = arrNewStore[i].replaceAll('"', '');
+                arrNewStore[i] = j;
+            }
+
+            const arrName = [];
+            resulTotal.forEach(function(item, thisItem) {
+                const className = item.className.split(' ')[1];
+                arrName.push(className);
+            });
+            for (let i = 0; i < arrName.length; i++) {
+                if (!(arrNewStore.includes(arrName[i]) &&
+                        arrCookie.includes(arrName[i]) &&
+                        (arrNewStore[arrNewStore.indexOf(arrName[i]) + 1] === arrCookie[arrCookie.indexOf(arrName[i]) + 1]))) {
+                    this.reset();
+                }
+            }
+            if (!(arrNewStore.includes('isLoad') &&
+                    arrCookie.includes('isLoad') &&
+                    (arrNewStore[arrNewStore.indexOf('isLoad') + 1] === arrCookie[arrCookie.indexOf('isLoad') + 1]))) {
+                this.reset();
+            }
+        }
+    }
+
+    restoreCalcData() {
+        this.chechingCookie();
+        resulTotal.forEach((item) => {
+            const className = item.className.split(' ')[1];
+            if (localStorage[className] && localStorage[className].value !== '') {
+                item.value = JSON.parse(localStorage[className]);
+            }
+        });
+        if (localStorage.isLoad) {
             this.blocked();
             btnStart.style.display = 'none';
             btnCancel.style.display = 'block';
             this.blockedTow();
         }
+
         this.getInputDate();
         this.chechingSalaryAmount();
     }
